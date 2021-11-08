@@ -38,6 +38,8 @@ public class PandaApplicationSeleniumTest {
         // Pamiętaj, że aplikacja Spring musi działać!
         //driver.get(String.format("http://ubuntucompose:%s", port));
         driver.get(String.format("http://ubuntucompose:%s", port));
+
+        //test
         
         // Alternatywnie, gdyby DNS dockera nie komunikował się poprawnie
         //driver.get(String.format("http://192.168.44.44:%s", port));
