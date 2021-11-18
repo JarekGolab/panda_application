@@ -11,3 +11,4 @@ W tym repozytorium znajdziecie pliki źródłowe aplikacji pozwalające na powr�
 | selenium_grid  | Projekt CI/CD/CD 2   | Testy selenium z użyciem Selenium Grid |
 | pipeline | Projekt CI/CD/CD 5 | Jenkinsfile |
 | infrastructure | Projekt CI/CD/CD 6 | Dodany katalog infrastructure z plikami terraform i ansible| Końcowa wersja projektu | 
+## Test
