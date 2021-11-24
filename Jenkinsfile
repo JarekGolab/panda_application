@@ -60,6 +60,7 @@ pipeline {
                         }
                      withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                         sh 'terraform init && terraform apply -auto-approve'
+                     }
                 }
             }
         }
