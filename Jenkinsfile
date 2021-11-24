@@ -6,9 +6,11 @@ pipeline {
     environment {
         IMAGE = readMavenPom().getArtifactId()
         VERSION = readMavenPom().getVersion()
+        ANSIBLE = tool name: 'Ansible', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
     }
     tools {
   maven 'M3'
+  terraform 'Terraform'
 }
 
     stages {
@@ -35,7 +37,7 @@ pipeline {
         }
          stage('Build docker image') {
             steps {
-                sh "mvn package -Pdocker"
+                sh "mvn package -Pdocker -Dmaven.test.skip=true"
             }
         }
              stage('Run docker app') {
@@ -55,7 +57,7 @@ pipeline {
             steps {
                 dir('infrastructure/terraform') {
                     withCredentials([file(credentialsId: 'panda-key', variable: 'panda-key')]) {
-                        sh "cp $panda-key ../panda-key.pem"
+                        sh "cp \$panda-key ../panda-key.pem"
                         }
                      withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                         sh 'terraform init && terraform apply -auto-approve -var-file panda.tfvars'
@@ -80,7 +82,7 @@ pipeline {
             steps {
                
              configFileProvider([configFile(fileId: '9d1ed313-ea70-4fa9-9934-7108c53eca75', variable: 'mvnSettings')]) {
-                 sh "mvn -s $mvnSettings deploy"
+                 sh "mvn -s $mvnSettings deploy -Dmaven.test.skip=true -e"
                 }
 
                
