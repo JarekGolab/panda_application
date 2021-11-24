@@ -56,8 +56,8 @@ pipeline {
         stage('Run terraform'){
             steps {
                 dir('infrastructure/terraform') {
-                    withCredentials([file(credentialsId: 'panda-key', variable: 'panda-key')]) {
-                        sh "cp \$panda-key ../panda-key.pem"
+                    withCredentials([file(credentialsId: 'panda-key', variable: 'pandakey')]) {
+                        sh "cp \$pandakey ../panda-key.pem"
                         }
                      withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                         sh 'terraform init && terraform apply -auto-approve -var-file panda.tfvars'
