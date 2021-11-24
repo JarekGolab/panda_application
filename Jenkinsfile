@@ -24,14 +24,13 @@ pipeline {
         }
         stage('Build and JUnit tests') {
             steps {
-                // Get some code from a GitHub repository
+                
                 sh "mvn clean install"
 
-                // Run Maven on a Unix agent.
+                
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
-                // To run Maven on a Windows agent, use
-                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                
             }
         }
          stage('Build docker image') {
@@ -56,7 +55,7 @@ pipeline {
             steps {
                 dir('infrastructure/terraform') {
                     withCredentials([file(credentialsId: 'panda-key', variable: 'panda-key')]) {
-                        sh "cp \$panda-key ../panda-key.pem"
+                        sh "cp $panda-key ../panda-key.pem"
                         }
                      withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                         sh 'terraform init && terraform apply -auto-approve -var-file panda.tfvars'
