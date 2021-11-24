@@ -59,7 +59,7 @@ pipeline {
                         sh "cp \$panda-key ../panda-key.pem"
                         }
                      withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
-                        sh 'terraform init && terraform apply -auto-approve'
+                        sh 'terraform init && terraform apply -auto-approve -var-file panda.tfvars'
                      }
                 }
             }
@@ -73,7 +73,7 @@ pipeline {
             steps {
                 dir('infrastructure/ansible') {
                     sh 'chmod 600 ../panda-key.pem'
-                    sh 'ansible-playbook -i ./inventory playbook.yml'
+                    sh 'ansible-playbook -i ./inventory playbook.yml -e ansible_python_interpreter=/usr/bin/python3'
                 }
             }
         }
