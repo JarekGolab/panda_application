@@ -52,7 +52,26 @@ pipeline {
                
             }
         }
-    
+        stage('Run terraform'){
+            steps {
+                dir('infrastructure/terraform') {
+                    sh 'terraform init && terraform apply -auto-approve'
+                }
+            }
+        }
+        stage('Copy Ansible role') {
+            steps {
+                sh 'cp -r infrastructure/ansible/panda/ /etc/ansible/roles'
+            }
+        }
+        stage('Run Ansible') {
+            steps {
+                dir('infrastructure/ansible') {
+                    sh 'chmod 600 ../panda-key.pem'
+                    sh 'ansible-playbook -i ./inventory playbook.yml'
+                }
+            }
+        }
         stage('Deploy to Artifactory') {
             steps {
                
