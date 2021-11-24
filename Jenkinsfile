@@ -55,7 +55,11 @@ pipeline {
         stage('Run terraform'){
             steps {
                 dir('infrastructure/terraform') {
-                    sh 'terraform init && terraform apply -auto-approve'
+                    withCredentials([file(credentialsId: 'panda-key', variable: 'panda-key')]) {
+                        sh "cp \$panda-key ../panda-key.pem"
+                        }
+                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                        sh 'terraform init && terraform apply -auto-approve'
                 }
             }
         }
