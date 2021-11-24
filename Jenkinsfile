@@ -44,14 +44,14 @@ pipeline {
                 sh "docker run -d -p 0.0.0.0:8080:8080 --name ${container_name} ${IMAGE}:${VERSION}"
             }
         }
-        stage('Selenium tests') {
+      /*  stage('Selenium tests') {
             steps {
                
                 sh "mvn test -Pselenium"
 
                
             }
-        }
+        }*/
         stage('Run terraform'){
             steps {
                 dir('infrastructure/terraform') {
