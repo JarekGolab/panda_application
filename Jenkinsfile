@@ -83,9 +83,15 @@ pipeline {
                
              configFileProvider([configFile(fileId: '9d1ed313-ea70-4fa9-9934-7108c53eca75', variable: 'mvnSettings')]) {
                  sh "mvn -s $mvnSettings deploy -Dmaven.test.skip=true -e"
+                }        
+            }
+        }
+        stage('Remove environment') {
+            steps {
+                input 'Remove environment'
+                dir('infrastructure/terraform') { 
+                    sh 'terraform destroy -auto-approve -var-file panda.tfvars'
                 }
-
-               
             }
         }
     }
