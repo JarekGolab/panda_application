@@ -90,7 +90,9 @@ pipeline {
             steps {
                 input 'Remove environment'
                 dir('infrastructure/terraform') { 
+                     withCredentials([file(credentialsId: 'panda-key', variable: 'pandakey')]) {
                     sh 'terraform destroy -auto-approve -var-file panda.tfvars'
+                     }
                 }
             }
         }
