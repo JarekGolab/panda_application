@@ -100,7 +100,7 @@ pipeline {
     post {
         always {
             sh "docker stop ${container_name}"
-            deleteDir()
+          //  deleteDir()
         }
     }
 }
